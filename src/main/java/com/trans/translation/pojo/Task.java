@@ -34,11 +34,21 @@ public class Task implements Serializable {
 
     private String territory;
 
+    private Integer total;
+
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
 
     public String getLanguage() {
         return language;
