@@ -1,6 +1,6 @@
 package com.trans.translation.pojo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,27 +19,27 @@ public class Task implements Serializable {
 
     private String title;
 
-    private String describe;
+    private String t_describe;
 
     private String filename;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date deadline;
 
-    private Integer status;
+    private Integer t_status;
 
     private String translatefile;
 
-    private String language;
+    private String t_language;
 
     private String territory;
 
     private Integer total;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
 
     public Integer getTotal() {
@@ -50,12 +50,12 @@ public class Task implements Serializable {
         this.total = total;
     }
 
-    public String getLanguage() {
-        return language;
+    public String getT_language() {
+        return t_language;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setT_language(String t_language) {
+        this.t_language = t_language;
     }
 
     public String getTerritory() {
@@ -90,12 +90,12 @@ public class Task implements Serializable {
         this.title = title;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getT_describe() {
+        return t_describe;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setT_describe(String t_describe) {
+        this.t_describe = t_describe;
     }
 
     public String getFilename() {
@@ -114,12 +114,12 @@ public class Task implements Serializable {
         this.deadline = deadline;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getT_status() {
+        return t_status;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setT_status(Integer t_status) {
+        this.t_status = t_status;
     }
 
     public String getTranslatefile() {
