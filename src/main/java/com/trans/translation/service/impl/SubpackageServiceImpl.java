@@ -7,6 +7,7 @@ import com.trans.translation.dao.SubpackageDao;
 import com.trans.translation.pojo.Subpackage;
 import com.trans.translation.pojo.Translation;
 import com.trans.translation.service.SubpackageService;
+import com.trans.translation.vo.SubpackageVo;
 import jdk.net.SocketFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,7 +46,7 @@ public class SubpackageServiceImpl implements SubpackageService {
     public Result pageQuery(int page, int size) {
         Sort sort = new Sort(Sort.Direction.DESC,"createtime");
         Pageable pageable = PageRequest.of(page-1, size,sort);
-        Page<Subpackage> pageData = subpackageDao.findAll(pageable);
+        Page<SubpackageVo> pageData = subpackageDao.findAllSubpackage(pageable);
         return new Result(true,StatusCode.OK,"查询成功",new PageResult<>(pageData.getTotalElements(),pageData.getContent()));
     }
 
@@ -65,13 +66,23 @@ public class SubpackageServiceImpl implements SubpackageService {
     public Result pageQueryByTerritory(int page, int size, String territory) {
         Sort sort = new Sort(Sort.Direction.DESC,"createtime");
         Pageable pageable = PageRequest.of(page-1, size,sort);
-        Page<Subpackage> pageData = subpackageDao.pageQueryByTerritory(territory,pageable);
+        Page<SubpackageVo> pageData = subpackageDao.pageQueryByTerritory(territory,pageable);
         return new Result(true,StatusCode.OK,"查询成功",new PageResult<>(pageData.getTotalElements(),pageData.getContent()));
     }
 
     @Override
     public Result findByContext(String taskId,Integer section) {
         return new Result(true,StatusCode.OK,"查询成功",subpackageDao.findBySection(taskId,section));
+    }
+
+    /**
+     * 通过id查找分包信息
+     * @param id
+     * @return
+     */
+    @Override
+    public Result findById(String id) {
+        return new Result(true,StatusCode.OK,"查询成功",subpackageDao.findByIdToVo(id));
     }
 
 

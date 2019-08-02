@@ -17,24 +17,15 @@ public class Task implements Serializable {
 
     private String userid;
 
-    private String title;
+    private String product_id;
 
-    private String t_describe;
-
-    private String filename;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date deadline;
+    private String filename;//文件名
 
     private Integer t_status;
 
-    private String translatefile;
+    private String translatefile;//翻译的文件
 
-    private String t_language;
-
-    private String territory;
-
-    private Integer total;
+    private Integer total;//共分为几段
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createtime;
@@ -42,36 +33,20 @@ public class Task implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
 
-    public Integer getTotal() {
-        return total;
-    }
-
-    public void setTotal(Integer total) {
-        this.total = total;
-    }
-
-    public String getT_language() {
-        return t_language;
-    }
-
-    public void setT_language(String t_language) {
-        this.t_language = t_language;
-    }
-
-    public String getTerritory() {
-        return territory;
-    }
-
-    public void setTerritory(String territory) {
-        this.territory = territory;
-    }
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(String product_id) {
+        this.product_id = product_id;
     }
 
     public String getUserid() {
@@ -82,36 +57,12 @@ public class Task implements Serializable {
         this.userid = userid;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getT_describe() {
-        return t_describe;
-    }
-
-    public void setT_describe(String t_describe) {
-        this.t_describe = t_describe;
-    }
-
     public String getFilename() {
         return filename;
     }
 
     public void setFilename(String filename) {
         this.filename = filename;
-    }
-
-    public Date getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
     }
 
     public Integer getT_status() {
@@ -130,7 +81,13 @@ public class Task implements Serializable {
         this.translatefile = translatefile;
     }
 
+    public Integer getTotal() {
+        return total;
+    }
 
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
 
     public Date getCreatetime() {
         return createtime;

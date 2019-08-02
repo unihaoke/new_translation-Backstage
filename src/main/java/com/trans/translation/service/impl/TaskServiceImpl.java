@@ -2,12 +2,15 @@ package com.trans.translation.service.impl;
 
 import com.trans.translation.common.Result;
 import com.trans.translation.common.StatusCode;
+import com.trans.translation.dao.ProductDao;
 import com.trans.translation.dao.SubpackageDao;
 import com.trans.translation.dao.TaskDao;
+import com.trans.translation.pojo.Product;
 import com.trans.translation.pojo.Subpackage;
 import com.trans.translation.pojo.Task;
 import com.trans.translation.service.TaskService;
 import com.trans.translation.utils.IdWorker;
+import com.trans.translation.vo.TaskVo;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -45,6 +48,9 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private SubpackageDao subpackageDao;
 
+    @Autowired
+    private ProductDao productDao;
+
     private Logger logger = LoggerFactory.getLogger(TaskServiceImpl.class);
 
     /**
@@ -63,21 +69,34 @@ public class TaskServiceImpl implements TaskService {
 
     /**
      * 添加任务和文件记录
-     * @param task
+     * @param taskVo
      * @param file
      * @return
      */
     @Override
-    public Result addTaskAndFile(Task task, MultipartFile file) {
-        if(task == null){
+    public Result addTaskAndFile(TaskVo taskVo, MultipartFile file) {
+        if(taskVo == null){
             return new Result(false,StatusCode.ERROR,"添加失败");
         }
         if (file.isEmpty()) {
             return new Result(false,StatusCode.ERROR,"发布失败");
         }
-        readWord(file);
-        task.setId(idWorker.nextId()+"");
+        Task task = new Task();
+        Product product = new Product();
+        String productId = idWorker.nextId()+"";
+        product.setPid(productId);
+        product.setDeadline(taskVo.getDeadline());
+        product.setT_describe(taskVo.getT_describe());
+        product.setT_language(taskVo.getT_language());
+        product.setTerritory(taskVo.getTerritory());
+        product.setTitle(taskVo.getTitle());
+        productDao.save(product);
+        String taskId = idWorker.nextId()+"";
+        task.setId(taskId);
+        task.setUserid(taskVo.getUserid());
+        task.setProduct_id(productId);
         //文件上传以及分包
+        readWord(file,task);
         String fileName = uploadFile(file);
         task.setFilename(fileName);
         task.setT_status(0);
@@ -173,19 +192,31 @@ public class TaskServiceImpl implements TaskService {
     /**
      * 将文档进行分包
      */
-    public void readWord(MultipartFile file){
+    public void readWord(MultipartFile file,Task task){
         String textFileName=file.getOriginalFilename();
         Map wordMap = new LinkedHashMap();//创建一个map对象存放word中的内容
         try {
-            if(textFileName.endsWith(".doc")){ //判断文件格式
+            if(textFileName.endsWith(".doc")){//判断文件格式
                 InputStream fis = file.getInputStream();
                 WordExtractor wordExtractor = new WordExtractor(fis);//使用HWPF组件中WordExtractor类从Word文档中提取文本或段落
                 int i=1;
                 for(String words : wordExtractor.getParagraphText()){//获取段落内容
+                    Subpackage subpackage = new Subpackage();
+                    subpackage.setId(idWorker.nextId()+"");
+                    subpackage.setTaskid(task.getId());
+                    subpackage.setUserid(task.getUserid());
+                    subpackage.setProduct_id(task.getProduct_id());
+                    subpackage.setContent(words);
+                    subpackage.setSection(i);
+                    subpackage.setCreatetime(new Date());
+                    if(!StringUtils.isEmpty(words)){
+                        subpackageDao.save(subpackage);
+                    }
                     System.out.println(words);
                     wordMap.put("DOC文档，第（"+i+"）段内容",words);
                     i++;
                 }
+                task.setTotal(i-1);
                 fis.close();
             }
             if(textFileName.endsWith(".docx")){
@@ -200,11 +231,24 @@ public class TaskServiceImpl implements TaskService {
                 int i=1;
                 for(XWPFParagraph paragraph : paras){
                     String words = paragraph.getText();
+                    Subpackage subpackage = new Subpackage();
+                    subpackage.setId(idWorker.nextId()+"");
+                    subpackage.setTaskid(task.getId());
+                    subpackage.setUserid(task.getUserid());
+                    subpackage.setProduct_id(task.getProduct_id());
+                    subpackage.setContent(words);
+                    subpackage.setSection(i);
+                    subpackage.setCreatetime(new Date());
+                    subpackage.setText_length(words.trim().length());
+                    if(!StringUtils.isEmpty(words)){
+                        subpackageDao.save(subpackage);
+                    }
                     System.out.println(words);
                     wordMap.put("DOCX文档，第（"+i+"）段内容",words);
                     System.out.println(" ");
                     i++;
                 }
+                task.setTotal(i-1);
                 opcPackage.close();
                 uFile.delete();
             }

@@ -21,17 +21,13 @@ public class Translation implements Serializable {
 
     private String translator;
 
-    private String title;
-
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
-    private Date deadline;
-
     private Integer section;
 
     private Integer status;
 
     private String translation;
 
+    private String product_id;
 
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date createtime;
@@ -65,28 +61,20 @@ public class Translation implements Serializable {
         this.subpackageid = subpackageid;
     }
 
+    public String getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(String product_id) {
+        this.product_id = product_id;
+    }
+
     public String getTranslator() {
         return translator;
     }
 
     public void setTranslator(String translator) {
         this.translator = translator;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Date getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
     }
 
     public Integer getSection() {

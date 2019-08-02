@@ -30,6 +30,13 @@ public class SubpackageController {
         return subpackageService.findByTerritory(territory);
     }
 
+    /**
+     * 通过领域查找分包信息
+     * @param page
+     * @param size
+     * @param territory
+     * @return
+     */
     @GetMapping(value = "/search/{page}/{size}/{territory}")
     public Result pageQueryByTerritory(@PathVariable int page, @PathVariable int size, @PathVariable String territory){
         return subpackageService.pageQueryByTerritory(page,size,territory);
@@ -44,4 +51,11 @@ public class SubpackageController {
     public Result findByContext(@PathVariable String taskId,@PathVariable Integer section){
         return subpackageService.findByContext(taskId,section);
     }
+
+    @GetMapping(value = "/{id}")
+    public Result findById(@PathVariable String id){
+        return subpackageService.findById(id);
+
+    }
+
 }

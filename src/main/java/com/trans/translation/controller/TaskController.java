@@ -3,6 +3,7 @@ package com.trans.translation.controller;
 import com.trans.translation.common.Result;
 import com.trans.translation.pojo.Task;
 import com.trans.translation.service.TaskService;
+import com.trans.translation.vo.TaskVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,8 +21,8 @@ public class TaskController {
     }
 
     @PostMapping("/upload")
-    public Result addTaskAndFile(Task task , @RequestParam("file") MultipartFile file){
-        return taskService.addTaskAndFile(task,file);
+    public Result addTaskAndFile(TaskVo taskVo, @RequestParam("file") MultipartFile file){
+        return taskService.addTaskAndFile(taskVo,file);
     }
 
 }

@@ -12,4 +12,6 @@ public interface SubpackageService {
     Result pageQueryByTerritory(int page, int size, String territory);
 
     Result findByContext(String taskId,Integer section);
+
+    Result findById(String id);
 }

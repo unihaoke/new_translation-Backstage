@@ -20,80 +20,25 @@ public class Subpackage implements Serializable {
 
     private String taskid;
 
+    private String product_id;
+
     private String content;
 
     private Integer section;
 
     private String translation;
 
-    private Integer status;
-
-    private String language;
-
-    private String territory;
-
-    private String title;
-
-    private String describe;
-
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
-    private Date deadline;
+    private Integer t_status;
 
     private Integer count;
+
+    private Integer text_length;
 
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public String getTerritory() {
-        return territory;
-    }
-
-    public void setTerritory(String territory) {
-        this.territory = territory;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescribe() {
-        return describe;
-    }
-
-    public void setDescribe(String describe) {
-        this.describe = describe;
-    }
-
-    public Date getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
-    }
 
     public String getId() {
         return id;
@@ -117,6 +62,14 @@ public class Subpackage implements Serializable {
 
     public void setTaskid(String taskid) {
         this.taskid = taskid;
+    }
+
+    public String getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(String product_id) {
+        this.product_id = product_id;
     }
 
     public String getContent() {
@@ -143,12 +96,20 @@ public class Subpackage implements Serializable {
         this.translation = translation;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getT_status() {
+        return t_status;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setT_status(Integer t_status) {
+        this.t_status = t_status;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     public Date getCreatetime() {
@@ -165,5 +126,13 @@ public class Subpackage implements Serializable {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
+    }
+
+    public Integer getText_length() {
+        return text_length;
+    }
+
+    public void setText_length(Integer text_length) {
+        this.text_length = text_length;
     }
 }
