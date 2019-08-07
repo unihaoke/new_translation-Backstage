@@ -27,6 +27,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -51,6 +53,7 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private ProductDao productDao;
 
+
     private Logger logger = LoggerFactory.getLogger(TaskServiceImpl.class);
 
     /**
@@ -63,8 +66,7 @@ public class TaskServiceImpl implements TaskService {
         if(StringUtils.isEmpty(userId)){
             return new Result(false,StatusCode.ERROR,"查询失败");
         }
-        Sort sort = new Sort(Sort.Direction.DESC,"createtime");
-        return new Result(true,StatusCode.OK,"查询成功",taskDao.findByUserid(userId,sort));
+        return new Result(true,StatusCode.OK,"查询成功",productDao.findTaskByUserId(userId));
     }
 
     /**
@@ -90,6 +92,7 @@ public class TaskServiceImpl implements TaskService {
         product.setT_language(taskVo.getT_language());
         product.setTerritory(taskVo.getTerritory());
         product.setTitle(taskVo.getTitle());
+        product.setOverdue(0);
         productDao.save(product);
         String taskId = idWorker.nextId()+"";
         task.setId(taskId);
@@ -208,6 +211,7 @@ public class TaskServiceImpl implements TaskService {
                     subpackage.setProduct_id(task.getProduct_id());
                     subpackage.setContent(words);
                     subpackage.setSection(i);
+                    subpackage.setT_status(0);
                     subpackage.setCreatetime(new Date());
                     if(!StringUtils.isEmpty(words)){
                         subpackageDao.save(subpackage);
@@ -239,6 +243,7 @@ public class TaskServiceImpl implements TaskService {
                     subpackage.setContent(words);
                     subpackage.setSection(i);
                     subpackage.setCreatetime(new Date());
+                    subpackage.setT_status(0);
                     subpackage.setText_length(words.trim().length());
                     if(!StringUtils.isEmpty(words)){
                         subpackageDao.save(subpackage);

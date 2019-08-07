@@ -1,7 +1,9 @@
 package com.trans.translation;
 
+import com.trans.translation.dao.ProductDao;
 import com.trans.translation.dao.SubpackageDao;
 import com.trans.translation.dao.TranslationDao;
+import com.trans.translation.pojo.Product;
 import com.trans.translation.pojo.Subpackage;
 import com.trans.translation.pojo.Translation;
 import org.junit.Test;
@@ -23,13 +25,11 @@ public class TranslationApplicationTests {
 	@Autowired
 	private TranslationDao translationDao;
 
+
 	@Test
 	public void contextLoads() {
-		Sort sort = new Sort(Sort.Direction.DESC,"createtime");
-		List<Translation> translation = translationDao.findByUserid("1",sort);
-		for (Translation t:translation) {
-			System.out.println(t.getCreatetime());
-		}
+
+
 	}
 
 }

@@ -19,31 +19,20 @@ public class Translation implements Serializable {
     @Column(name = "subpackageid", nullable = false)
     private String subpackageid;
 
-    private String translator;
+    private String product_id;
 
-    private Integer section;
+    private String translator;
 
     private Integer status;
 
     private String translation;
 
-    private String product_id;
 
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
-
-    private Integer isget;
-
-    public Integer getIsget() {
-        return isget;
-    }
-
-    public void setIsget(Integer isget) {
-        this.isget = isget;
-    }
 
     public String getUserid() {
         return userid;
@@ -75,14 +64,6 @@ public class Translation implements Serializable {
 
     public void setTranslator(String translator) {
         this.translator = translator;
-    }
-
-    public Integer getSection() {
-        return section;
-    }
-
-    public void setSection(Integer section) {
-        this.section = section;
     }
 
     public Integer getStatus() {

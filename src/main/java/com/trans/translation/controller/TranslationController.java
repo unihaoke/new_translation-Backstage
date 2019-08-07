@@ -37,4 +37,14 @@ public class TranslationController {
     public Result findTranslate(@PathVariable String userId, @PathVariable String subpackageId){
         return translationService.findTranslate(userId,subpackageId);
     }
+
+    @GetMapping(value = "/translate/{tl}/{text}")
+    public Result translateText(@PathVariable(value = "tl") String tl,@PathVariable(value = "text") String text){
+        return translationService.GooleTranslate(tl,text);
+    }
+
+    @GetMapping(value = "/translation/{subpackageId}")
+    public Result  findBySubpackageId(@PathVariable String subpackageId){
+        return translationService.findBySubpackageId(subpackageId);
+    }
 }

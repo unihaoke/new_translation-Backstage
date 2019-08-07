@@ -12,3 +12,7 @@ spring:
     database: mysql
     show-sql: true
 
+corePoolSize: 10
+maxPoolSize: 200
+queueCapacity: 10
+

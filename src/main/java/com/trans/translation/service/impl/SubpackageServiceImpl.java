@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 /**
  * 服务层
@@ -82,6 +83,9 @@ public class SubpackageServiceImpl implements SubpackageService {
      */
     @Override
     public Result findById(String id) {
+        if(StringUtils.isEmpty(id)){
+            return new Result(false,StatusCode.ERROR,"查询失败");
+        }
         return new Result(true,StatusCode.OK,"查询成功",subpackageDao.findByIdToVo(id));
     }
 

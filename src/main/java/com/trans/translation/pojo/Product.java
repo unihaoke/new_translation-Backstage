@@ -1,5 +1,6 @@
 package com.trans.translation.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
@@ -23,8 +24,10 @@ public class Product implements Serializable {
 
     private String territory;//翻译领域
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date deadline;
+
+    private Integer overdue;//0未过期，1过期
 
     public String getPid() {
         return pid;
@@ -60,6 +63,14 @@ public class Product implements Serializable {
 
     public String getTerritory() {
         return territory;
+    }
+
+    public Integer getOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(Integer overdue) {
+        this.overdue = overdue;
     }
 
     public void setTerritory(String territory) {

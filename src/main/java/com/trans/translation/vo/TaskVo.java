@@ -17,7 +17,7 @@ public class TaskVo implements Serializable {
 
     private String territory;//翻译领域
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern ="yyyy-MM-dd HH:mm:ss")
     private Date deadline;
 
     private String userid;

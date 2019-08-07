@@ -18,9 +18,11 @@ public class User implements Serializable {
     @Id
     private String id;//ID
 
-    private String name;
+    private String username;
 
     private String phone;
+
+    private Integer u_status;
 
     private String email;
 
@@ -42,12 +44,20 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Integer getU_status() {
+        return u_status;
+    }
+
+    public void setU_status(Integer u_status) {
+        this.u_status = u_status;
     }
 
     public String getPhone() {

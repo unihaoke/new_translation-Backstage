@@ -78,7 +78,8 @@ public class UserServiceImpl implements UserService {
         if(user == null){
             return new Result(false,StatusCode.ERROR,"修改失败");
         }
-        return new Result(true,StatusCode.OK,"修改成功",userDao.save(user));
+        userDao.update(user.getUsername(),user.getEmail(),user.getPhone(),new Date(),user.getId());
+        return new Result(true,StatusCode.OK,"修改成功");
     }
 
     @Override
@@ -86,6 +87,6 @@ public class UserServiceImpl implements UserService {
         if(StringUtils.isEmpty(id)){
             return new Result(false,StatusCode.ERROR,"查询失败");
         }
-        return new Result(true,StatusCode.OK,"修改成功",userDao.findById(id).get());
+        return new Result(true,StatusCode.OK,"查询成功",userDao.findById(id));
     }
 }

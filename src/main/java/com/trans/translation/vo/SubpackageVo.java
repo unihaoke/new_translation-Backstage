@@ -18,8 +18,10 @@ public class SubpackageVo implements Serializable {
 
     private String territory;//翻译领域
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date deadline; //截止时间
+
+    private Integer overdue;//0未过期，1过期
 
     private String userid;
 
@@ -39,13 +41,15 @@ public class SubpackageVo implements Serializable {
 
     private Integer text_length;//文字长度
 
-    public SubpackageVo(String id, String title, String t_describe, String t_language, String territory, Date deadline, String userid, String taskid, String product_id, String content, Integer section, String translation, Integer t_status, Integer count, Integer text_length) {
+
+    public SubpackageVo(String id, String title, String t_describe, String t_language, String territory, Date deadline, Integer overdue, String userid, String taskid, String product_id, String content, Integer section, String translation, Integer t_status, Integer count, Integer text_length) {
         this.id = id;
         this.title = title;
         this.t_describe = t_describe;
         this.t_language = t_language;
         this.territory = territory;
         this.deadline = deadline;
+        this.overdue = overdue;
         this.userid = userid;
         this.taskid = taskid;
         this.product_id = product_id;
@@ -183,5 +187,13 @@ public class SubpackageVo implements Serializable {
 
     public void setText_length(Integer text_length) {
         this.text_length = text_length;
+    }
+
+    public Integer getOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(Integer overdue) {
+        this.overdue = overdue;
     }
 }

@@ -5,6 +5,7 @@ import com.trans.translation.dao.TranslationDao;
 import com.trans.translation.pojo.Translation;
 import com.trans.translation.service.TranslationService;
 
+import com.trans.translation.vo.TranslationVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class TranslationTest {
     @Test
     public void test(){
         Sort sort = new Sort(Sort.Direction.DESC,"createtime");
-        List<Translation>translation = translationDao.findByUserid("1", sort);
-        System.out.println(translation.toString());
+        List<TranslationVo>translation = translationDao.findBySubpackageId("1158751055836745728");
+        System.out.println(translation.get(0).getTranslation());
     }
 }

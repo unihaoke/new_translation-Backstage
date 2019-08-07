@@ -14,4 +14,10 @@ public interface TranslationService {
     Result add(Translation translation);
 
     Result findTranslate(String userId, String subpackageId);
+
+    Result translateText(String text);
+
+    Result GooleTranslate(String tl, String text);
+
+    Result findBySubpackageId(String subpackageId);
 }

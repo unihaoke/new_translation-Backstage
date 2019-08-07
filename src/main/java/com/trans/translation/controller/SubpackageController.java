@@ -25,7 +25,7 @@ public class SubpackageController {
         return subpackageService.pageQuery(page,size);
     }
 
-    @GetMapping(value = "/{territory}")
+    @GetMapping(value = "/search/{territory}")
     public Result findByTerritory(@PathVariable String territory){
         return subpackageService.findByTerritory(territory);
     }
@@ -55,7 +55,6 @@ public class SubpackageController {
     @GetMapping(value = "/{id}")
     public Result findById(@PathVariable String id){
         return subpackageService.findById(id);
-
     }
 
 }
