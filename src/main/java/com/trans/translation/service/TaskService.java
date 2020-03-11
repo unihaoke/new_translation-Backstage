@@ -10,4 +10,8 @@ public interface TaskService {
     Result findByUserId(String userId);
 
     Result addTaskAndFile(TaskVo taskVo, MultipartFile file);
+
+    Result addTask(TaskVo taskVo);
+
+    Result uploadFile(MultipartFile file);
 }

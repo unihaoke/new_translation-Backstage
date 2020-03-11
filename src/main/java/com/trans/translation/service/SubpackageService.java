@@ -14,4 +14,8 @@ public interface SubpackageService {
     Result findByContext(String taskId,Integer section);
 
     Result findById(String id);
+
+    Result findByTaskId(String taskId);
+
+    Result merge(String userId, String taskId);
 }

@@ -26,4 +26,9 @@ public interface UserDao extends JpaRepository<User,String>,JpaSpecificationExec
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE trans_user SET username=?,email=?,phone=?,updatetime=? WHERE id = ?", nativeQuery = true)
     int update( String username, String email, String phone,Date updatetime, String id);
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(value = "UPDATE trans_user SET integral=integral+1 where id = ?",nativeQuery = true)
+    void addIntegral(String id);
 }

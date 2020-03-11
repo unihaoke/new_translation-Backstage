@@ -26,7 +26,7 @@ public class User implements Serializable {
 
     private String email;
 
-    private Integer accept;
+    private Integer integral;
 
     private Integer totality;
 
@@ -76,12 +76,12 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public Integer getAccept() {
-        return accept;
+    public Integer getIntegral() {
+        return integral;
     }
 
-    public void setAccept(Integer accept) {
-        this.accept = accept;
+    public void setIntegral(Integer integral) {
+        this.integral = integral;
     }
 
     public Integer getTotality() {

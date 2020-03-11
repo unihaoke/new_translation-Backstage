@@ -2,8 +2,12 @@ package com.trans.translation.pojo;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -11,12 +15,15 @@ import java.util.Date;
 
 @Entity
 @Table(name = "trans_subpackage")
+@EntityListeners(AuditingEntityListener.class)
 public class Subpackage implements Serializable {
 
     @Id
     private String id;
 
     private String userid;
+
+    private String transid;
 
     private String taskid;
 
@@ -34,9 +41,11 @@ public class Subpackage implements Serializable {
 
     private Integer text_length;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
+    @CreatedDate
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createtime;
 
+    @LastModifiedDate
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
 
@@ -54,6 +63,14 @@ public class Subpackage implements Serializable {
 
     public void setUserid(String userid) {
         this.userid = userid;
+    }
+
+    public String getTransid() {
+        return transid;
+    }
+
+    public void setTransid(String transid) {
+        this.transid = transid;
     }
 
     public String getTaskid() {

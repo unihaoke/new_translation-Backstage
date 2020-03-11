@@ -11,8 +11,51 @@ spring:
   jpa:
     database: mysql
     show-sql: true
+    hibernate:
+      ddl-auto: update
+
+  redis:
+      host: 192.168.71.128
+      port: 6379
+
+
+# 自定义redis key
+redis:
+  key:
+    prefix:
+      authCode: "portal:authCode:"
+    expire:
+      authCode: 120 # 验证码超期时间
 
 corePoolSize: 10
-maxPoolSize: 200
+maxPoolSize: 20
 queueCapacity: 10
+filePath: "E:\\apk\\"
 
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  secret: hzu-portal-secret #JWT加解密使用的密钥
+  expiration: 604800 #JWT的超期限时间(60*60*24)
+  tokenHead: Bearer  #JWT负载中拿到开头
+
+secure:
+  ignored:
+    urls: #安全路径白名单
+      - /swagger-ui.html
+      - /swagger-resources/**
+      - /swagger/**
+      - /**/v2/api-docs
+      - /**/*.js
+      - /**/*.css
+      - /**/*.png
+      - /**/*.ico
+      - /webjars/springfox-swagger-ui/**
+      - /druid/**
+      - /actuator/**
+      - /sso/**
+      - /home/**
+
+wx:
+  appId: wxe0d156a5aac77e36
+  secret: 9a59467bbc96e5a99bdfedf1be63e087
+  grant_type: authorization_code

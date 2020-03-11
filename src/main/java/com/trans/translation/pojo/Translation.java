@@ -1,6 +1,9 @@
 package com.trans.translation.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,15 +11,15 @@ import java.util.Date;
 
 @Entity
 @Table(name = "trans_translation")
-@IdClass(TranslationKey.class)
+@EntityListeners(AuditingEntityListener.class)
 public class Translation implements Serializable {
 
-    @Id
-    @Column(name = "userid", nullable = false)
-    private String userid;
 
     @Id
-    @Column(name = "subpackageid", nullable = false)
+    private String id;//ID
+
+    private String userid;
+
     private String subpackageid;
 
     private String product_id;
@@ -27,12 +30,25 @@ public class Translation implements Serializable {
 
     private String translation;
 
+    private String content;
 
+    private Integer t_length;
+
+    @CreatedDate
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
+    @LastModifiedDate
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getUserid() {
         return userid;
@@ -96,5 +112,21 @@ public class Translation implements Serializable {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getT_length() {
+        return t_length;
+    }
+
+    public void setT_length(Integer t_length) {
+        this.t_length = t_length;
     }
 }

@@ -6,6 +6,8 @@ import java.util.Date;
 
 public class TranslationVo implements Serializable {
 
+    private String id; //译文id
+
     private String title;//标题
 
     private String t_describe;//描述
@@ -14,7 +16,7 @@ public class TranslationVo implements Serializable {
 
     private String territory;//翻译领域
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date deadline;
 
     private Integer overdue;//0未过期，1过期
@@ -31,10 +33,17 @@ public class TranslationVo implements Serializable {
 
     private String translation;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createtime;
 
-    public TranslationVo(String title, String t_describe, String t_language, String territory, Date deadline, Integer overdue, String userid, String subpackageid, String product_id, String translator, Integer status, String translation, Date createtime) {
+    private String content;
+
+    private Integer t_length;
+
+    private Integer integral;
+
+    public TranslationVo(String id,String title, String t_describe, String t_language, String territory, Date deadline, Integer overdue, String userid, String subpackageid, String product_id, String translator, Integer status, String translation, Date createtime, String content, Integer t_length) {
+        this.id = id;
         this.title = title;
         this.t_describe = t_describe;
         this.t_language = t_language;
@@ -48,9 +57,46 @@ public class TranslationVo implements Serializable {
         this.status = status;
         this.translation = translation;
         this.createtime = createtime;
+        this.content = content;
+        this.t_length = t_length;
+    }
+    public TranslationVo(String id,String title, String t_describe, String t_language, String territory, Date deadline, Integer overdue, String userid, String subpackageid, String product_id, String translator, Integer status, String translation, Date createtime, String content, Integer t_length,Integer integral) {
+        this.id = id;
+        this.title = title;
+        this.t_describe = t_describe;
+        this.t_language = t_language;
+        this.territory = territory;
+        this.deadline = deadline;
+        this.overdue = overdue;
+        this.userid = userid;
+        this.subpackageid = subpackageid;
+        this.product_id = product_id;
+        this.translator = translator;
+        this.status = status;
+        this.translation = translation;
+        this.createtime = createtime;
+        this.content = content;
+        this.t_length = t_length;
+        this.integral = integral;
     }
 
     public TranslationVo() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Integer getIntegral() {
+        return integral;
+    }
+
+    public void setIntegral(Integer integral) {
+        this.integral = integral;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserid() {
@@ -155,5 +201,21 @@ public class TranslationVo implements Serializable {
 
     public void setOverdue(Integer overdue) {
         this.overdue = overdue;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getT_length() {
+        return t_length;
+    }
+
+    public void setT_length(Integer t_length) {
+        this.t_length = t_length;
     }
 }

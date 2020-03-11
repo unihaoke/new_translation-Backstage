@@ -18,7 +18,7 @@ public class SubpackageVo implements Serializable {
 
     private String territory;//翻译领域
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date deadline; //截止时间
 
     private Integer overdue;//0未过期，1过期
@@ -41,8 +41,11 @@ public class SubpackageVo implements Serializable {
 
     private Integer text_length;//文字长度
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date createtime;//创建时间
 
-    public SubpackageVo(String id, String title, String t_describe, String t_language, String territory, Date deadline, Integer overdue, String userid, String taskid, String product_id, String content, Integer section, String translation, Integer t_status, Integer count, Integer text_length) {
+
+    public SubpackageVo(String id, String title, String t_describe, String t_language, String territory, Date deadline, Integer overdue, String userid, String taskid, String product_id, String content, Integer section, String translation, Integer t_status, Integer count, Integer text_length, Date createtime) {
         this.id = id;
         this.title = title;
         this.t_describe = t_describe;
@@ -59,14 +62,18 @@ public class SubpackageVo implements Serializable {
         this.t_status = t_status;
         this.count = count;
         this.text_length = text_length;
+        this.createtime = createtime;
     }
 
     public SubpackageVo() {
     }
 
-    public SubpackageVo(String t_describe, Integer section) {
-        this.t_describe = t_describe;
-        this.section = section;
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
 
     public String getId() {

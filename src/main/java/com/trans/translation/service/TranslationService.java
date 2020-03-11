@@ -3,6 +3,8 @@ package com.trans.translation.service;
 import com.trans.translation.common.Result;
 import com.trans.translation.pojo.Translation;
 
+import java.util.Map;
+
 public interface TranslationService {
 
     Result findAll();
@@ -17,7 +19,11 @@ public interface TranslationService {
 
     Result translateText(String text);
 
-    Result GooleTranslate(String tl, String text);
+    String GooleTranslate(String tl, String text);
 
     Result findBySubpackageId(String subpackageId);
+
+    Result textSimilarity(Map<String,String> map);
+
+    Result adopt(Map<String,String> map);
 }
