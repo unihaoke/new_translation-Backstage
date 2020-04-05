@@ -107,4 +107,19 @@ public class User implements Serializable {
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
     }
+
+    public User(String id, String username, String phone, Integer u_status, String email, Integer integral, Integer totality, Date createtime, Date updatetime) {
+        this.id = id;
+        this.username = username;
+        this.phone = phone;
+        this.u_status = u_status;
+        this.email = email;
+        this.integral = integral;
+        this.totality = totality;
+        this.createtime = createtime;
+        this.updatetime = updatetime;
+    }
+
+    public User() {
+    }
 }

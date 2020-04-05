@@ -4,13 +4,16 @@ import com.trans.translation.common.PageResult;
 import com.trans.translation.common.Result;
 import com.trans.translation.common.StatusCode;
 import com.trans.translation.dao.SubpackageDao;
+import com.trans.translation.dao.TaskDao;
 import com.trans.translation.pojo.Subpackage;
 import com.trans.translation.pojo.Translation;
 import com.trans.translation.service.RedisService;
 import com.trans.translation.service.SubpackageService;
+import com.trans.translation.utils.IdWorker;
 import com.trans.translation.vo.SubpackageVo;
 import jdk.net.SocketFlow;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +40,17 @@ public class SubpackageServiceImpl implements SubpackageService {
     @Autowired
     private SubpackageDao subpackageDao;
 
+//    @Autowired
+//    private RedisTemplate redisTemplate;
+
     @Autowired
-    private RedisTemplate redisTemplate;
+    private IdWorker idWorker;
+
+    @Value("${filePath}")
+    private String filePath;
+
+    @Autowired
+    private TaskDao taskDao;
 
     @Override
     public Result findAll() {
@@ -52,10 +65,10 @@ public class SubpackageServiceImpl implements SubpackageService {
      * @return
      */
     @Override
-    public Result pageQuery(int page, int size) {
+    public Result pageQuery(int page, int size,String userId) {
         Sort sort = new Sort(Sort.Direction.DESC,"createtime");
         Pageable pageable = PageRequest.of(page-1, size,sort);
-        Page<SubpackageVo> pageData = subpackageDao.findAllSubpackage(pageable);
+        Page<SubpackageVo> pageData = subpackageDao.findAllSubpackage(pageable,userId);
         return new Result(true,StatusCode.OK,"查询成功",new PageResult<>(pageData.getTotalElements(),pageData.getContent()));
     }
 
@@ -72,10 +85,10 @@ public class SubpackageServiceImpl implements SubpackageService {
      * @return
      */
     @Override
-    public Result pageQueryByTerritory(int page, int size, String territory) {
+    public Result pageQueryByTerritory(int page, int size, String territory,String userId) {
         Sort sort = new Sort(Sort.Direction.DESC,"createtime");
         Pageable pageable = PageRequest.of(page-1, size,sort);
-        Page<SubpackageVo> pageData = subpackageDao.pageQueryByTerritory(territory,pageable);
+        Page<SubpackageVo> pageData = subpackageDao.pageQueryByTerritory(territory,pageable,userId);
         return new Result(true,StatusCode.OK,"查询成功",new PageResult<>(pageData.getTotalElements(),pageData.getContent()));
     }
 
@@ -94,21 +107,27 @@ public class SubpackageServiceImpl implements SubpackageService {
         if(StringUtils.isEmpty(id)){
             return new Result(false,StatusCode.ERROR,"查询失败");
         }
-        SubpackageVo subpackageVo = (SubpackageVo) redisTemplate.opsForValue().get("sub"+id);
-        if (subpackageVo==null){
-            subpackageVo = subpackageDao.findByIdToVo(id);
-            redisTemplate.opsForValue().set("sub"+id,subpackageVo);
-        }
-        return new Result(true,StatusCode.OK,"查询成功",subpackageVo);
+//        SubpackageVo subpackageVo = (SubpackageVo) redisTemplate.opsForValue().get("sub"+id);
+//        if (subpackageVo==null){
+//            subpackageVo = subpackageDao.findByIdToVo(id);
+//            redisTemplate.opsForValue().set("sub"+id,subpackageVo);
+//        }
+        return new Result(true,StatusCode.OK,"查询成功",subpackageDao.findByIdToVo(id));
     }
 
+    /**
+     * 通过任务id获取分包信息
+     * @param taskId
+     * @return
+     */
     @Override
     public Result findByTaskId(String taskId) {
         if (StringUtils.isEmpty(taskId)){
             return new Result(false,StatusCode.ERROR,"查询失败");
         }
         List<Subpackage> list = subpackageDao.findByTaskId(taskId);
-        return new Result(true,StatusCode.OK,"查询成功",list);
+        int count = subpackageDao.checkFinish(taskId);
+        return new Result(true,StatusCode.OK,count+"",list);
     }
 
     /**
@@ -118,17 +137,46 @@ public class SubpackageServiceImpl implements SubpackageService {
      * @return
      */
     @Override
-    public Result merge(String userId, String taskId) {
-        int count = subpackageDao.checkStatus(taskId);//检查是否各个分包任务都已经完成
-        if(count>0){
-            return new Result(false,StatusCode.ERROR,"还有分包任务未完成");
-        }
+    public String merge(String userId, String taskId) {
         List<String> list = subpackageDao.merge(userId,taskId);
         StringBuffer sb = new StringBuffer();
-        list.stream().forEach(str->sb.append(str));
-        System.out.println(sb.toString());
-        return new Result(true,StatusCode.OK,"合并成功",sb.toString());
+        list.stream().forEach(str->sb.append(str+"\r\n"));
+        String fileName = idWorker.nextId()+".doc";
+        String path = filePath+fileName;
+        //将字符串写入文档中
+        BufferedOutputStream out = null;
+        File file = new File(path);
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file);
+            out =  new BufferedOutputStream(fos);
+            out.write(sb.toString().getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                out.flush();
+                out.close();
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //更新任务中翻译文件
+        taskDao.updateMergeFile(path,taskId);
+        return path;
     }
+
+    /**
+     * 检查是否有分包任务没有完成
+     * @param taskId
+     * @return
+     */
+    @Override
+    public int checkMerge(String taskId) {
+        return subpackageDao.checkStatus(taskId);//检查是否各个分包任务都已经完成;
+    }
+
 
 
 }

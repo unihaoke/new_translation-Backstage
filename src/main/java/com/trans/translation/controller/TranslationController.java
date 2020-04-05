@@ -73,4 +73,14 @@ public class TranslationController {
     public Result adopt(@RequestBody Map<String, String> map){
         return translationService.adopt(map);
     }
+
+    @PutMapping
+    public Result update(@RequestBody Map<String, String> map){
+        return translationService.update(map);
+    }
+
+    @DeleteMapping
+    public Result delete(@RequestBody Map<String, String> map){
+        return translationService.delete(map);
+    }
 }

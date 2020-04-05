@@ -22,11 +22,17 @@ public class Approval implements Serializable {
 
     private String subpackageid;
 
+    private String taskid;
+
     private String userid;
 
-    private String status;
+    private Integer status;
 
     private String groupid;
+
+    private String transid;
+
+    private String translation;
 
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createtime;
@@ -47,6 +53,14 @@ public class Approval implements Serializable {
         this.subpackageid = subpackageid;
     }
 
+    public String getTaskid() {
+        return taskid;
+    }
+
+    public void setTaskid(String taskid) {
+        this.taskid = taskid;
+    }
+
     public String getUserid() {
         return userid;
     }
@@ -55,11 +69,11 @@ public class Approval implements Serializable {
         this.userid = userid;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -69,6 +83,23 @@ public class Approval implements Serializable {
 
     public void setGroupid(String groupid) {
         this.groupid = groupid;
+    }
+
+    public String getTransid() {
+        return transid;
+    }
+
+
+    public void setTransid(String transid) {
+        this.transid = transid;
+    }
+
+    public String getTranslation() {
+        return translation;
+    }
+
+    public void setTranslation(String translation) {
+        this.translation = translation;
     }
 
     public Date getCreatetime() {

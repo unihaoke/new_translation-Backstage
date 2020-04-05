@@ -14,4 +14,6 @@ public interface TaskService {
     Result addTask(TaskVo taskVo);
 
     Result uploadFile(MultipartFile file);
+
+    String findMergeFile(String taskId);
 }

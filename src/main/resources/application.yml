@@ -7,7 +7,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/translation?characterEncoding=utf8&serverTimezone=UTC
     username: root
-    password: tiger
+    password: admin123?
   jpa:
     database: mysql
     show-sql: true
@@ -30,7 +30,8 @@ redis:
 corePoolSize: 10
 maxPoolSize: 20
 queueCapacity: 10
-filePath: "E:\\apk\\"
+filePath: "/apps/webapps-to-deploy/"
+
 
 jwt:
   tokenHeader: Authorization #JWT存储的请求头
@@ -56,6 +57,11 @@ secure:
       - /home/**
 
 wx:
-  appId: wxe0d156a5aac77e36
-  secret: 9a59467bbc96e5a99bdfedf1be63e087
+  appId: wx720555805b941f3e
+  secret: c406f9d15164c1d3f93755d72be99f99
   grant_type: authorization_code
+
+#wx:
+#  appId: wxe0d156a5aac77e36
+#  secret: 9a59467bbc96e5a99bdfedf1be63e087
+#  grant_type: authorization_code

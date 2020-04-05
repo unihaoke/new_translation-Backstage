@@ -33,6 +33,8 @@ public class TaskVo implements Serializable {
 
     private Integer total;//共分为几段
 
+    private Integer minSub;//分包最小字数
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createtime;
 
@@ -52,6 +54,8 @@ public class TaskVo implements Serializable {
         this.total = total;
         this.createtime = createtime;
     }
+
+
 
     public TaskVo() {
     }
@@ -158,5 +162,13 @@ public class TaskVo implements Serializable {
 
     public void setUserid(String userid) {
         this.userid = userid;
+    }
+
+    public Integer getMinSub() {
+        return minSub;
+    }
+
+    public void setMinSub(Integer minSub) {
+        this.minSub = minSub;
     }
 }

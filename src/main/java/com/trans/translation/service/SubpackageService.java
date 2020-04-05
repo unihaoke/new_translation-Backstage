@@ -5,11 +5,11 @@ import com.trans.translation.common.Result;
 public interface SubpackageService {
     Result findAll();
 
-    Result pageQuery(int page, int size);
+    Result pageQuery(int page, int size,String userId);
 
     Result findByTerritory(String territory);
 
-    Result pageQueryByTerritory(int page, int size, String territory);
+    Result pageQueryByTerritory(int page, int size, String territory,String userId);
 
     Result findByContext(String taskId,Integer section);
 
@@ -17,5 +17,8 @@ public interface SubpackageService {
 
     Result findByTaskId(String taskId);
 
-    Result merge(String userId, String taskId);
+    String merge(String userId, String taskId);
+
+    int checkMerge(String taskId);
+
 }

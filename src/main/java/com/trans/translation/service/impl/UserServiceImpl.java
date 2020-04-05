@@ -102,11 +102,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result findById(String id) {
+    public Result findById(String id,String name) {
         if(StringUtils.isEmpty(id)){
             return new Result(false,StatusCode.ERROR,"查询失败");
         }
-        return new Result(true,StatusCode.OK,"查询成功",userDao.findById(id));
+        Optional<User> optional = userDao.findById(id);
+        User user = optional.get();
+        if (user.getUsername()==null){
+            user.setUsername(name);
+            userDao.save(user);
+        }
+        return new Result(true,StatusCode.OK,"查询成功",user);
     }
 
     @Override
@@ -148,7 +154,10 @@ public class UserServiceImpl implements UserService {
         User user = userDao.findById(id).orElse(null);
         if (user==null){
             user = new User();
+            user.setIntegral(0);
+            user.setTotality(0);
             user.setId(id);
+            user.setCreatetime(new Date());
             userDao.save(user);
         }
         return user;

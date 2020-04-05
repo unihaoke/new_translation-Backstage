@@ -31,4 +31,9 @@ public interface UserDao extends JpaRepository<User,String>,JpaSpecificationExec
     @Transactional
     @Query(value = "UPDATE trans_user SET integral=integral+1 where id = ?",nativeQuery = true)
     void addIntegral(String id);
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(value = "UPDATE trans_user tu LEFT JOIN trans_translation tt ON tu.id = tt.userid SET integral=integral+1 WHERE tt.id = ?",nativeQuery = true)
+    void addIntegralBytransId(String transId);
 }

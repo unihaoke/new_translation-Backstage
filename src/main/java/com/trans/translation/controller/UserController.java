@@ -4,12 +4,14 @@ import com.trans.translation.common.Result;
 import com.trans.translation.common.StatusCode;
 import com.trans.translation.pojo.User;
 import com.trans.translation.service.UserService;
+import com.trans.translation.utils.JwtTokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +20,8 @@ import java.util.Map;
 @Api(tags = "UserController", description = "用户登录注册管理")
 public class UserController {
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
     @Value("${jwt.tokenHeader}")
     private String tokenHeader;
     @Value("${jwt.tokenHead}")
@@ -58,7 +62,7 @@ public class UserController {
     /**
      * 查询全部数据
      */
-    @GetMapping
+    @GetMapping(value = "/findAll")
     @ApiOperation("查询全部数据")
     public Result findAll(){
         return userService.findAll();
@@ -68,21 +72,22 @@ public class UserController {
      * 修改用户信息
      */
     @ApiOperation("修改用户信息")
-    @PutMapping(value="/{id}")
-    public Result update(@RequestBody User user,@PathVariable String id){
-        user.setId(id);
+    @PutMapping
+    public Result update(@RequestBody User user,HttpServletRequest request){
+        String userId = jwtTokenUtil.getUserIdFromToken(request.getHeader(tokenHeader).substring(tokenHead.length()));
+        user.setId(userId);
         return userService.update(user);
     }
 
     /**
      * 根据ID查询
-     * @param id ID
      * @return
      */
     @ApiOperation("根据ID查询")
-    @GetMapping(value="/{id}")
-    public Result findById(@PathVariable String id){
-        return userService.findById(id);
+    @GetMapping(value = "/{name}")
+    public Result findById(HttpServletRequest request,@PathVariable(value = "name") String name){
+        String userId = jwtTokenUtil.getUserIdFromToken(request.getHeader(tokenHeader).substring(tokenHead.length()));
+        return userService.findById(userId,name);
     }
 
 }

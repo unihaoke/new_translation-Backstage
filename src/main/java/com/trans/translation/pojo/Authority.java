@@ -23,6 +23,8 @@ public class Authority implements Serializable {
 
     private String taskid;
 
+    private String authorized_personid;
+
     public String getId() {
         return id;
     }
@@ -53,5 +55,13 @@ public class Authority implements Serializable {
 
     public void setTaskid(String taskid) {
         this.taskid = taskid;
+    }
+
+    public String getAuthorized_personid() {
+        return authorized_personid;
+    }
+
+    public void setAuthorized_personid(String authorized_personid) {
+        this.authorized_personid = authorized_personid;
     }
 }

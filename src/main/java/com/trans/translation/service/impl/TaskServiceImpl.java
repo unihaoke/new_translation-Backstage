@@ -137,7 +137,7 @@ public class TaskServiceImpl implements TaskService {
         task.setProduct_id(productId);
         task.setFilename(taskVo.getFileName());
         //文件上传以及分包
-        readWord(task);
+        readWord(task,taskVo.getMinSub());
         task.setT_status(0);
 //        task.setTotal(count);
         task.setCreatetime(new Date());
@@ -230,7 +230,7 @@ public class TaskServiceImpl implements TaskService {
     /**
      * 将文档进行分包
      */
-    public void readWord(Task task){
+    public void readWord(Task task,int subMin){
         String textFileName=task.getFilename();
         File file = new File(filePath+textFileName);
 
@@ -240,24 +240,48 @@ public class TaskServiceImpl implements TaskService {
                 InputStream fis = new FileInputStream(file);
                 WordExtractor wordExtractor = new WordExtractor(fis);//使用HWPF组件中WordExtractor类从Word文档中提取文本或段落
                 int i=1;
-                for(String words : wordExtractor.getParagraphText()){//获取段落内容
-                    Subpackage subpackage = new Subpackage();
+                StringBuffer sb = new StringBuffer();
+                for (int j = 0; j < wordExtractor.getParagraphText().length; j++) {
+                    if (sb.toString().length()>subMin||j+1>=wordExtractor.getParagraphText().length){
+                        Subpackage subpackage = new Subpackage();
                     subpackage.setId(idWorker.nextId()+"");
                     subpackage.setTaskid(task.getId());
                     subpackage.setUserid(task.getUserid());
                     subpackage.setProduct_id(task.getProduct_id());
-                    subpackage.setContent(words);
+                    subpackage.setContent(sb.toString());
                     subpackage.setSection(i);
                     subpackage.setT_status(0);
                     subpackage.setCreatetime(new Date());
-                    subpackage.setText_length(words.trim().length());
-                    if(!StringUtils.isEmpty(words.trim())){
+                    subpackage.setText_length(sb.toString().trim().length());
+                    if(!StringUtils.isEmpty(sb.toString().trim())){
                         subpackageDao.save(subpackage);
                     }
-                    System.out.println(words);
-                    wordMap.put("DOC文档，第（"+i+"）段内容",words);
+                    System.out.println(wordExtractor.getParagraphText()[j]);
+                    wordMap.put("DOC文档，第（"+i+"）段内容",sb.toString());
                     i++;
+                    sb = new StringBuffer();
+                    }
+                    sb.append(wordExtractor.getParagraphText()[j].trim()+"\r\n");
                 }
+
+//                for(String words : wordExtractor.getParagraphText()){//获取段落内容
+//                    Subpackage subpackage = new Subpackage();
+//                    subpackage.setId(idWorker.nextId()+"");
+//                    subpackage.setTaskid(task.getId());
+//                    subpackage.setUserid(task.getUserid());
+//                    subpackage.setProduct_id(task.getProduct_id());
+//                    subpackage.setContent(words);
+//                    subpackage.setSection(i);
+//                    subpackage.setT_status(0);
+//                    subpackage.setCreatetime(new Date());
+//                    subpackage.setText_length(words.trim().length());
+//                    if(!StringUtils.isEmpty(words.trim())){
+//                        subpackageDao.save(subpackage);
+//                    }
+//                    System.out.println(words);
+//                    wordMap.put("DOC文档，第（"+i+"）段内容",words);
+//                    i++;
+//                }
                 task.setTotal(i-1);
                 fis.close();
             }
@@ -271,26 +295,52 @@ public class TaskServiceImpl implements TaskService {
                 XWPFDocument document = new XWPFDocument(opcPackage);//使用XWPF组件XWPFDocument类获取文档内容
                 List<XWPFParagraph> paras = document.getParagraphs();
                 int i=1;
-                for(XWPFParagraph paragraph : paras){
-                    String words = paragraph.getText();
+                StringBuffer str = new StringBuffer();
+
+                for (int j = 0; j < paras.size(); j++) {
+                    if (str.toString().length()>subMin||j+1>=paras.size()){
                     Subpackage subpackage = new Subpackage();
                     subpackage.setId(idWorker.nextId()+"");
                     subpackage.setTaskid(task.getId());
                     subpackage.setUserid(task.getUserid());
                     subpackage.setProduct_id(task.getProduct_id());
-                    subpackage.setContent(words);
+                    subpackage.setContent(str.toString());
                     subpackage.setSection(i);
                     subpackage.setCreatetime(new Date());
                     subpackage.setT_status(0);
-                    subpackage.setText_length(words.trim().length());
-                    if(!StringUtils.isEmpty(words.trim())){
+                    subpackage.setText_length(str.toString().trim().length());
+                    if(!StringUtils.isEmpty(str.toString().trim())){
                         subpackageDao.save(subpackage);
                     }
-                    System.out.println(words);
-                    wordMap.put("DOCX文档，第（"+i+"）段内容",words);
+                    System.out.println(str.toString());
+                    wordMap.put("DOCX文档，第（"+i+"）段内容",str.toString());
                     System.out.println(" ");
                     i++;
+                    str = new StringBuffer();
+                    }
+                    str.append(paras.get(j).getText()+"\r\n");
                 }
+//                for(XWPFParagraph paragraph : paras){
+//
+//                    String words = paragraph.getText();
+//                    Subpackage subpackage = new Subpackage();
+//                    subpackage.setId(idWorker.nextId()+"");
+//                    subpackage.setTaskid(task.getId());
+//                    subpackage.setUserid(task.getUserid());
+//                    subpackage.setProduct_id(task.getProduct_id());
+//                    subpackage.setContent(words);
+//                    subpackage.setSection(i);
+//                    subpackage.setCreatetime(new Date());
+//                    subpackage.setT_status(0);
+//                    subpackage.setText_length(words.trim().length());
+//                    if(!StringUtils.isEmpty(words.trim())){
+//                        subpackageDao.save(subpackage);
+//                    }
+//                    System.out.println(words);
+//                    wordMap.put("DOCX文档，第（"+i+"）段内容",words);
+//                    System.out.println(" ");
+//                    i++;
+//                }
                 task.setTotal(i-1);
                 opcPackage.close();
                 uFile.delete();
@@ -299,5 +349,15 @@ public class TaskServiceImpl implements TaskService {
             e.printStackTrace();
         }
         System.out.println(wordMap);
+    }
+
+    /**
+     * 查找合并的翻译文件
+     * @param taskId
+     * @return
+     */
+    @Override
+    public String findMergeFile(String taskId) {
+        return taskDao.findMergeById(taskId);
     }
 }

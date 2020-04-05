@@ -68,4 +68,15 @@ public class Group implements Serializable {
     public void setCount(Integer count) {
         this.count = count;
     }
+
+    public Group(String id, String group_name, String userid, Date createtime, Integer count) {
+        this.id = id;
+        this.group_name = group_name;
+        this.userid = userid;
+        this.createtime = createtime;
+        this.count = count;
+    }
+
+    public Group() {
+    }
 }

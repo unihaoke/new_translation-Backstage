@@ -51,8 +51,8 @@ public class TranslationServiceImpl implements TranslationService {
     @Autowired
     private TranslationDao translationDao;
 
-    @Autowired
-    private RedisTemplate redisTemplate;
+//    @Autowired
+//    private RedisTemplate redisTemplate;
 
     @Autowired
     private IdWorker idWorker;
@@ -89,12 +89,14 @@ public class TranslationServiceImpl implements TranslationService {
 
     @Override
     public Result findByUserId(String userId) {
-        if (StringUtils.isEmpty(userId)) {
-            return new Result(false, StatusCode.ERROR, "查询失败");
-        }
         return new Result(true, StatusCode.OK, "查询成功", translationDao.findByUserId(userId));
     }
 
+    /**
+     * 添加翻译记录
+     * @param translation
+     * @return
+     */
     @Override
     public Result add(Translation translation) {
         if (translation == null) {
@@ -217,14 +219,44 @@ public class TranslationServiceImpl implements TranslationService {
     public Result adopt(Map<String, String> map) {
         //将该译文id和译文存入分包任务中
         subpackageDao.updateAdopt(map.get("transId"),map.get("trans_text"),map.get("subpackageid"));
-        SubpackageVo subpackageVo = subpackageDao.findByIdToVo(map.get("subpackageid"));
-        redisTemplate.delete("sub"+map.get("subpackageid"));
-        redisTemplate.opsForValue().set("sub"+map.get("subpackageid"),subpackageVo);
+//        SubpackageVo subpackageVo = subpackageDao.findByIdToVo(map.get("subpackageid"));
+//        redisTemplate.delete("sub"+map.get("subpackageid"));
+//        redisTemplate.opsForValue().set("sub"+map.get("subpackageid"),subpackageVo);
         //将对应的译文状态改为被采纳
         translationDao.adopt(map.get("transId"));
         //TODO: 2020/3/2  增加用户的积分
         userDao.addIntegral(map.get("userId"));
         return new Result(true,StatusCode.OK,"采纳成功");
+    }
+
+    /**
+     * 更新译文
+     * @param map
+     * @return
+     */
+    @Override
+    public Result update(Map<String, String> map) {
+        int count = translationDao.checkFinish(map.get("id"));//如果已被采纳无法修改
+        if (count>0){
+            return new Result(false,StatusCode.ERROR,"已被采纳无法修改");
+        }
+        translationDao.update(map.get("translation"),map.get("id"));
+        return new Result(true,StatusCode.OK,"更新成功");
+    }
+
+    /**
+     * 删除翻译记录
+     * @param map
+     * @return
+     */
+    @Override
+    public Result delete(Map<String, String> map) {
+        int count = translationDao.checkFinish(map.get("id"));//如果已被采纳无法修改
+        if (count>0){
+            return new Result(false,StatusCode.ERROR,"已被采纳无法修改");
+        }
+        translationDao.deleteById(map.get("id"));
+        return new Result(true,StatusCode.OK,"删除成功");
     }
 
 }

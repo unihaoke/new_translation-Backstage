@@ -31,4 +31,12 @@ public interface TranslationDao extends JpaRepository<Translation,String>,JpaSpe
     @Transactional
     @Query(value = "UPDATE trans_translation SET status=1 where id=?",nativeQuery = true)
     void adopt(String id);
+
+    @Query(value = "SELECT COUNT(1) FROM trans_translation WHERE id= ? AND status=1",nativeQuery = true)
+    int checkFinish(String id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE trans_translation SET translation=? where id=?",nativeQuery = true)
+    void update(String translation,String id);
 }

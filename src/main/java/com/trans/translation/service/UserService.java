@@ -15,7 +15,7 @@ public interface UserService {
 
     Result update(User user);
 
-    Result findById(String id);
+    Result findById(String id,String name);
 
     /**
      * 获取用户信息

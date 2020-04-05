@@ -26,4 +26,8 @@ public interface TranslationService {
     Result textSimilarity(Map<String,String> map);
 
     Result adopt(Map<String,String> map);
+
+    Result update(Map<String,String> map);
+
+    Result delete(Map<String,String> map);
 }
